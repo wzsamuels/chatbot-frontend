@@ -9,9 +9,10 @@ export function App() {
   const [selectedBot, setSelectedBot] = useState(AVAILABLE_BOTS[0].id);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');  
-  const [temperature, setTemperature] = useState(0.7);
-  const [maxTokens, setMaxTokens] = useState(1000);  
+  const [temperature, setTemperature] = useState(1);
+  const [maxTokens, setMaxTokens] = useState(50);  
   const [isLoading, setIsLoading] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -85,35 +86,46 @@ export function App() {
           </select>
         </div>
 
-        {/* 3. Add the input fields for Temperature and Max Tokens */}
-        <div class="flex gap-4 border-t border-gray-100 pt-4">
-          <div class="flex-1 flex flex-col gap-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase">Temperature ({temperature})</label>
-            <input 
-              type="range" 
-              min="0" 
-              max="2" 
-              step="0.1"
-              value={temperature}
-              onInput={(e) => setTemperature(e.target.value)}
-              disabled={isLoading}
-              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer disabled:opacity-50"
-            />
-          </div>
-          
-          <div class="flex-1 flex flex-col gap-1">
-            <label class="text-xs font-semibold text-gray-500 uppercase">Max Tokens</label>
-            <input 
-              type="number" 
-              min="1"
-              max="8000"
-              value={maxTokens}
-              onInput={(e) => setMaxTokens(e.target.value)}
-              disabled={isLoading}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 disabled:bg-gray-100"
-            />
-          </div>
+        <div>
+          <button 
+            type="button" 
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            class="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors cursor-pointer select-none"
+          >
+            {showAdvanced ? '− Hide advanced settings' : '+ Show advanced settings'}
+          </button>
         </div>
+
+        {showAdvanced && (
+          <div class="flex gap-4 border-t border-gray-100 pt-3 mt-1">
+            <div class="flex-1 flex flex-col gap-1">
+              <label class="text-xs font-semibold text-gray-500 uppercase">Temperature ({temperature})</label>
+              <input 
+                type="range" 
+                min="0" 
+                max="2" 
+                step="0.1"
+                value={temperature}
+                onInput={(e) => setTemperature(e.target.value)}
+                disabled={isLoading}
+                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer disabled:opacity-50"
+              />
+            </div>
+            
+            <div class="flex-1 flex flex-col gap-1">
+              <label class="text-xs font-semibold text-gray-500 uppercase">Max Tokens</label>
+              <input 
+                type="number" 
+                min="1"
+                max="8000"
+                value={maxTokens}
+                onInput={(e) => setMaxTokens(e.target.value)}
+                disabled={isLoading}
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 disabled:bg-gray-100"
+              />
+            </div>
+          </div>
+        )}
         
       </div>
 
